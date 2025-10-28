@@ -1,0 +1,42 @@
+import { baseConfig } from './jest.config.base.js'
+
+export default {
+  ...baseConfig,
+  rootDir: '.',
+  collectCoverageFrom: [
+    'apps/**/*.ts',
+    '!apps/**/*.spec.ts',
+    '!apps/**/*.e2e-spec.ts',
+    '!apps/**/main.ts',
+    '!apps/**/*.module.ts',
+    '!apps/**/migrations/**',
+    '!apps/**/test-utils/**',
+  ],
+  coverageDirectory: './coverage',
+  coverageReporters: ['text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
+  },
+  projects: [
+    {
+      displayName: 'unit',
+      testMatch: ['**/__tests__/unit/**/*.spec.ts'],
+      testEnvironment: 'node',
+    },
+    {
+      displayName: 'integration',
+      testMatch: ['**/__tests__/integration/**/*.spec.ts'],
+      testEnvironment: 'node',
+    },
+    {
+      displayName: 'e2e',
+      testMatch: ['**/__tests__/e2e/**/*.spec.ts'],
+      testEnvironment: 'node',
+    },
+  ],
+}
