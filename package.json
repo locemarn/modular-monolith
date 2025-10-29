@@ -38,8 +38,6 @@
     "lint:ci": "biome ci .",
     "lint:check": "biome check",
     "lint:strict": "biome check --error-on-warnings",
-    "format:check": "biome format --check",
-    "analyze": "biome analyze",
     "fix": "biome check --write && biome format --write",
     "prepare": "biome check --write && tsc --noEmit",
     "check:all": "biome check && tsc --noEmit && jest --passWithNoTests",
