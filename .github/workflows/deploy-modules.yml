@@ -43,64 +43,75 @@ jobs:
     
     services:
       postgres:
-        image: postgres:15.4
+        image: postgres:15-alpine
         env:
-          POSTGRES_USER: postgres_user
-          POSTGRES_PASSWORD: postgres_password
-          POSTGRES_DB: user_service_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5432:5432
+          - 5433:5432
 
       rabbitmq:
-        image: rabbitmq:3-management
+        image: rabbitmq:3-management-alpine
         env:
-          RABBITMQ_DEFAULT_USER: rabbit_user
-          RABBITMQ_DEFAULT_PASS: rabbit_password
+          RABBITMQ_DEFAULT_USER: test_user
+          RABBITMQ_DEFAULT_PASS: test_password
         options: >-
-          --health-cmd "rabbitmqctl status"
+          --health-cmd "rabbitmq-diagnostics ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5672:5672
+          - 5673:5672
+          - 15673:15672
 
     steps:
       - uses: actions/checkout@v4
       
       - uses: pnpm/action-setup@v2
         with:
-          version: 8.15.0
+          version: 9
           
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
           
       - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
         
       - name: Run lint
-        run: pnpm run lint:ci
+        run: pnpm biome check .
         
       - name: Run type check
         run: pnpm run check:strict
         
-      - name: Run tests
+      - name: Run unit and integration tests
         run: pnpm test
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres_user
-          POSTGRES_PASSWORD: postgres_password
-          POSTGRES_DB: user_service_db
-          RABBITMQ_URL: amqp://rabbit_user:rabbit_password@localhost:5672
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5433
+          DATABASE_USER: test_user
+          DATABASE_PASSWORD: test_password
+          DATABASE_NAME: test_db
+          RABBITMQ_URL: amqp://test_user:test_password@localhost:5673
+          NODE_ENV: test
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5433
+          DATABASE_USER: test_user
+          DATABASE_PASSWORD: test_password
+          DATABASE_NAME: test_db
+          RABBITMQ_URL: amqp://test_user:test_password@localhost:5673
+          NODE_ENV: test
 
   build-api-gateway:
     runs-on: ubuntu-latest
