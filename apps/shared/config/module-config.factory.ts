@@ -1,4 +1,4 @@
-import { ModuleConfig } from "./module.interfaces";
+import { ModuleConfig } from './module.interfaces'
 
 export class ModuleConfigFactory {
   static createApiGatewayConfig(): ModuleConfig {
@@ -11,7 +11,7 @@ export class ModuleConfigFactory {
         package: 'api_gateway',
         protoPath: 'apps/api-gateway/proto/api-gateway.proto',
       },
-    };
+    }
   }
 
   static createUserServiceConfig(): ModuleConfig {
@@ -25,6 +25,6 @@ export class ModuleConfigFactory {
           durable: false,
         },
       },
-    };
+    }
   }
 }

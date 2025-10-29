@@ -15,5 +15,7 @@ export const createAppConfig = (appName) => ({
   ...baseConfig,
   rootDir: '.',
   coverageDirectory: `../../coverage/${appName}`,
-  setupFilesAfterEnv: ['<rootDir>/../../apps/shared/test-utils/setup/jest.setup.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/../../apps/shared/test-utils/setup/jest.setup.ts',
+  ],
 })

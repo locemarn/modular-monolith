@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { of } from 'rxjs'
 import { RABBITMQ_CONSTANTS } from '../../shared/constants/rabbitmq'
-import { UserTestFactory } from '../../shared/test-utils/factories/user-test.factory'
 import { RABBITMQ_SERVICE } from '../../shared/rabbitmq/rabbitmq.module'
 import { RabbitmqService } from '../../shared/rabbitmq/rabbitmq.service'
+import { UserTestFactory } from '../../shared/test-utils/factories/user-test.factory'
 import { ApiGatewayService } from './api-gateway.service'
 
 describe('ApiGatewayService', () => {

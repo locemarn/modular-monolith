@@ -3,7 +3,7 @@ import {
   Injectable,
   Logger,
   UnauthorizedException,
-} from "@nestjs/common";
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { EventBus, UserCreatedEvent } from '../../../../shared/events'
@@ -41,7 +41,7 @@ export class UserServiceService {
       const email = EmailValueObject.create(dto.email)
       const user = await this.userRepository.getUserByEmail(email)
       if (!user) {
-        throw new UnauthorizedException('Invalid credentials');
+        throw new UnauthorizedException('Invalid credentials')
       }
 
       const isPasswordValid = await bcrypt.compare(
@@ -50,7 +50,7 @@ export class UserServiceService {
       )
 
       if (!isPasswordValid) {
-        throw new UnauthorizedException('Invalid credentials');
+        throw new UnauthorizedException('Invalid credentials')
       }
 
       const payload: JwtPayload = {

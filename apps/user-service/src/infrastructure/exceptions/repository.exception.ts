@@ -16,7 +16,10 @@ export class RepositoryException extends Error {
     )
   }
 
-  static findError(originalError: Error, searchCriteria: string): RepositoryException {
+  static findError(
+    originalError: Error,
+    searchCriteria: string,
+  ): RepositoryException {
     return new RepositoryException(
       `Failed to find user by ${searchCriteria}`,
       originalError,
@@ -24,7 +27,10 @@ export class RepositoryException extends Error {
     )
   }
 
-  static deleteError(originalError: Error, userId: string): RepositoryException {
+  static deleteError(
+    originalError: Error,
+    userId: string,
+  ): RepositoryException {
     return new RepositoryException(
       `Failed to delete user with ID: ${userId}`,
       originalError,

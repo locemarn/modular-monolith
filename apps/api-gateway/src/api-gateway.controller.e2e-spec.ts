@@ -65,7 +65,6 @@ describe('ApiGatewayController (e2e)', () => {
 
   describe('User Authentication Flow', () => {
     it('should complete full authentication flow', async () => {
-
       const createUserInput = UserTestFactory.createValidUserInput()
       const createdUserResponse = UserTestFactory.createUserResponse()
 

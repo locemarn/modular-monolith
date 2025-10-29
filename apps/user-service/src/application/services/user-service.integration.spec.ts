@@ -87,7 +87,9 @@ describe('UserServiceService (Integration)', () => {
         email: 'notfound@example.com',
       }
 
-      await expect(service.login(loginDto)).rejects.toThrow('Invalid credentials')
+      await expect(service.login(loginDto)).rejects.toThrow(
+        'Invalid credentials',
+      )
     })
   })
 

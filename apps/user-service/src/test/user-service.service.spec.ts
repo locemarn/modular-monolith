@@ -3,9 +3,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import * as bcrypt from 'bcrypt'
 import { EventBus } from '../../../shared/events'
 import { LoginUserDto, RegisterUserDto } from '../application/dtos'
+import { UserServiceService } from '../application/services/user-service.service'
 import { UserEntity } from '../domain/entities/user.entity'
 import { IUserRepositoryInterface } from '../domain/repositories/user.repository.interface'
-import { UserServiceService } from '../application/services/user-service.service'
 
 jest.mock('bcrypt', () => ({
   compare: jest.fn(),
@@ -137,7 +137,9 @@ describe('UserServiceService (Unit)', () => {
     it('should throw error for non-existent user', async () => {
       mockRepository.getUserByEmail.mockResolvedValue(null)
 
-      await expect(service.login(loginDto)).rejects.toThrow('Invalid credentials')
+      await expect(service.login(loginDto)).rejects.toThrow(
+        'Invalid credentials',
+      )
     })
 
     it('should throw error for invalid password', async () => {

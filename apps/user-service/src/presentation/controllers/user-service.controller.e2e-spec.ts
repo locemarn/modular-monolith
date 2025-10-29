@@ -5,8 +5,8 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { firstValueFrom } from 'rxjs'
 import { DataSource } from 'typeorm'
-import { RABBITMQ_CONSTANTS } from '../../../../shared/constants/rabbitmq'
 import { testDatabaseConfig } from '../../../../shared/config/database.config'
+import { RABBITMQ_CONSTANTS } from '../../../../shared/constants/rabbitmq'
 import { UserTestFactory } from '../../../../shared/test-utils/factories/user-test.factory'
 import {
   testRabbitMQConfig,
@@ -75,7 +75,6 @@ describe('UserServiceController (e2e)', () => {
       await client.connect()
 
       await new Promise((resolve) => setTimeout(resolve, 3000))
-
     } catch (error) {
       console.error('❌ Setup failed:', error)
       throw error

@@ -40,7 +40,7 @@
     "lint:strict": "biome check --error-on-warnings",
     "format:check": "biome format --check",
     "analyze": "biome analyze",
-    "fix": "biome check --apply && biome format --write",
+    "fix": "biome check --write && biome format --write",
     "prepare": "biome check --apply && tsc --noEmit",
     "check:all": "biome check && tsc --noEmit && jest --passWithNoTests",
     "test": "jest --silent",
@@ -124,23 +124,15 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
+    "moduleFileExtensions": ["js", "json", "ts"],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
+    "collectCoverageFrom": ["**/*.(t|j)s"],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/apps/"
-    ]
+    "roots": ["<rootDir>/apps/"]
   }
 }

@@ -1,5 +1,5 @@
-import { Username } from '../../value-objects'
 import { InvalidUsernameException } from '../../exceptions'
+import { Username } from '../../value-objects'
 
 describe('Username', () => {
   describe('create', () => {

@@ -1,45 +1,45 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
 export interface ModuleConfig {
-  name: string;
-  port: number;
-  environment: string;
-  database?: TypeOrmModuleOptions;
-  rabbitmq?: RabbitMQModuleConfig;
-  grpc?: GRPCModuleConfig;
-  jwt?: JWTModuleConfig;
+  name: string
+  port: number
+  environment: string
+  database?: TypeOrmModuleOptions
+  rabbitmq?: RabbitMQModuleConfig
+  grpc?: GRPCModuleConfig
+  jwt?: JWTModuleConfig
 }
 
 export interface RabbitMQModuleConfig {
-  queue: string;
+  queue: string
   queueOptions?: {
-    durable: boolean;
-  };
+    durable: boolean
+  }
 }
 
 export interface GRPCModuleConfig {
-  url: string;
-  package: string;
-  protoPath: string;
+  url: string
+  package: string
+  protoPath: string
 }
 
 export interface JWTModuleConfig {
-  jwtSecret: string;
-  jwtExpiresIn: string;
-  jwtRefreshSecret: string;
-  jwtRefreshExpiresIn: string;
+  jwtSecret: string
+  jwtExpiresIn: string
+  jwtRefreshSecret: string
+  jwtRefreshExpiresIn: string
 }
 
 export interface ModuleMetadata {
-  name: string;
-  version: string;
-  port: number;
-  hasGrpc: boolean;
-  hasRabbitMQ: boolean;
-  hasDatabase: boolean;
-  dependencies: string[];
-  sharedDependencies: string[];
-  buildTarget: string;
+  name: string
+  version: string
+  port: number
+  hasGrpc: boolean
+  hasRabbitMQ: boolean
+  hasDatabase: boolean
+  dependencies: string[]
+  sharedDependencies: string[]
+  buildTarget: string
 }
 
 export class ModuleConfigFactory {
@@ -53,7 +53,7 @@ export class ModuleConfigFactory {
         package: 'api_gateway',
         protoPath: 'apps/api-gateway/proto/api-gateway.proto',
       },
-    };
+    }
   }
 
   static createUserServiceConfig(): ModuleConfig {
@@ -67,6 +67,6 @@ export class ModuleConfigFactory {
           durable: false,
         },
       },
-    };
+    }
   }
 }

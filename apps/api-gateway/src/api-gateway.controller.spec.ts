@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { JwtService } from '@nestjs/jwt'
+import { Test, TestingModule } from '@nestjs/testing'
 import { ApiGatewayTestFactory } from '../../shared/test-utils/factories/api-gateway-test.factory'
 import { UserTestFactory } from '../../shared/test-utils/factories/user-test.factory'
 import { ApiGatewayController } from './api-gateway.controller'
@@ -18,12 +18,10 @@ describe('ApiGatewayController', () => {
         {
           provide: JwtService,
           useValue: {
-            verify: jest
-              .fn()
-              .mockReturnValue({
-                sub: 'test-user-id',
-                email: 'test@example.com',
-              }),
+            verify: jest.fn().mockReturnValue({
+              sub: 'test-user-id',
+              email: 'test@example.com',
+            }),
             sign: jest.fn().mockReturnValue('test-token'),
           },
         },

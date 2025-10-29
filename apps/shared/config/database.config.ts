@@ -1,8 +1,8 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 import * as dotenv from 'dotenv'
 import { DataSourceOptions } from 'typeorm'
-import { TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { EventStore } from '../events'
 import { UserTypeOrmEntity } from '../../user-service/src/infrastructure/entities/user.typeorm-entity'
+import { EventStore } from '../events'
 
 dotenv.config()
 
@@ -30,7 +30,8 @@ const baseConfig = {
   host: parsedUrl?.host || process.env.POSTGRES_HOST || 'localhost',
   port: parsedUrl?.port || parseInt(process.env.POSTGRES_PORT || '5432'),
   username: parsedUrl?.username || process.env.POSTGRES_USER || 'postgres_user',
-  password: parsedUrl?.password || process.env.POSTGRES_PASSWORD || 'postgres_password',
+  password:
+    parsedUrl?.password || process.env.POSTGRES_PASSWORD || 'postgres_password',
   database: parsedUrl?.database || process.env.POSTGRES_DB || 'user_service_db',
   entities: [UserTypeOrmEntity, EventStore],
   logging: process.env.NODE_ENV === 'development',

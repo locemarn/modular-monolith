@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { UserTestFactory } from '../../../../shared/test-utils/factories/user-test.factory'
-import { UserServiceController } from './user-service.controller'
 import { UserServiceService } from '../../application/services/user-service.service'
+import { UserServiceController } from './user-service.controller'
 
 describe('UserServiceController (Integration)', () => {
   let controller: UserServiceController
