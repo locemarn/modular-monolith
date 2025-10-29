@@ -4,7 +4,6 @@ metadata:
   name: user-service
   labels:
     app: user-service
-    component: service
 spec:
   replicas: 2
   selector:
@@ -14,50 +13,36 @@ spec:
     metadata:
       labels:
         app: user-service
-        component: service
     spec:
       containers:
       - name: user-service
-        image: user-service:latest
+        image: ghcr.io/seu-usuario/seu-repo/user-service:latest
         ports:
         - containerPort: 3001
-          name: http
         env:
-        - name: NODE_ENV
-          value: "production"
-        - name: USER_SERVICE_PORT
-          value: "3001"
-        - name: POSTGRES_HOST
+        - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: postgres-secret
-              key: host
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: username
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: password
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: database
+              name: user-service-secrets
+              key: DATABASE_URL
         - name: RABBITMQ_URL
           valueFrom:
             secretKeyRef:
-              name: rabbitmq-secret
-              key: url
+              name: user-service-secrets
+              key: RABBITMQ_URL
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: user-service-secrets
+              key: JWT_SECRET
+        - name: NODE_ENV
+          value: "production"
         resources:
           requests:
-            memory: "512Mi"
+            memory: "256Mi"
             cpu: "250m"
           limits:
-            memory: "1Gi"
+            memory: "512Mi"
             cpu: "500m"
         livenessProbe:
           httpGet:
@@ -69,6 +54,18 @@ spec:
           httpGet:
             path: /health
             port: 3001
-          initialDelaySeconds: 5
+          initialDelaySeconds: 10
           periodSeconds: 5
-      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+  - protocol: TCP
+    port: 3001
+    targetPort: 3001
+  type: ClusterIP
