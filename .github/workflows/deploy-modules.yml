@@ -82,12 +82,7 @@ jobs:
           cache: 'pnpm'
           
       - name: Install dependencies
-        run: |
-          pnpm install --frozen-lockfile || {
-            echo "Lockfile incompatible, clearing cache and retrying..."
-            pnpm store prune
-            pnpm install --frozen-lockfile
-          }
+        run: pnpm install
         
       - name: Run lint
         run: pnpm run lint:ci
