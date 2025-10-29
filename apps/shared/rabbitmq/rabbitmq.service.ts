@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import {
   ClientProxy,
   ClientProxyFactory,
+  RmqOptions,
   Transport,
 } from '@nestjs/microservices'
 import { Observable } from 'rxjs'
@@ -14,18 +15,24 @@ export class RabbitmqService implements IRabbitMQInterface {
   initializeClients(
     configs: Array<{ serviceName: string; queueName: string }>,
   ) {
+    const isProduction = process.env.NODE_ENV === 'production'
+    const rabbitmqUrl = isProduction
+      ? process.env.CLOUDAMQP_URL
+      : process.env.RABBITMQ_URL ||
+        'amqp://rabbit_user:rabbit_password@localhost:5672'
+
     configs.forEach(({ serviceName, queueName }) => {
       if (!this.clients.has(serviceName)) {
         const client = ClientProxyFactory.create({
           transport: Transport.RMQ,
           options: {
-            urls: ['amqp://rabbit_user:rabbit_password@localhost:5672'],
+            urls: [rabbitmqUrl],
             queue: queueName,
             queueOptions: {
-              durable: false,
+              durable: isProduction, // Durable em produção
             },
           },
-        })
+        } as RmqOptions)
         this.clients.set(serviceName, client)
       }
     })

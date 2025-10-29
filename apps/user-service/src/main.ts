@@ -3,9 +3,13 @@ import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import { loadEnvironment } from '../../shared/config/env.config'
 import { RABBITMQ_CONSTANTS } from '../../shared/constants/rabbitmq'
 import { AllExceptionsFilter } from './presentation/filters/rpc-exception.filter'
 import { UserServiceModule } from './user-service.module'
+
+// Carrega variáveis de ambiente antes de tudo
+loadEnvironment()
 
 async function bootstrap() {
   const logger = new Logger()
@@ -15,7 +19,12 @@ async function bootstrap() {
   })
 
   const configService = app.get(ConfigService)
-  const rabbitMqUrl = configService.get('RABBITMQ_URL')
+  const nodeEnv = configService.get('NODE_ENV')
+
+  const rabbitMqUrl =
+    nodeEnv === 'production'
+      ? configService.get('CLOUDAMQP_URL')
+      : configService.get('RABBITMQ_URL')
 
   const validationPipe = new ValidationPipe({
     transform: true,
@@ -37,7 +46,8 @@ async function bootstrap() {
       urls: [rabbitMqUrl],
       queue: RABBITMQ_CONSTANTS.QUEUES.USER_QUEUE,
       queueOptions: {
-        durable: false,
+        durable: true,
+        autoDelete: false,
       },
     },
   })

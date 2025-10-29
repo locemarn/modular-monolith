@@ -43,6 +43,8 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
+.env.production
+.env.test
 
 # temp directory
 .temp
@@ -62,3 +64,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # user-service
 /apps/user-service/node_modules
+
+# MD files
+deploy_config.md

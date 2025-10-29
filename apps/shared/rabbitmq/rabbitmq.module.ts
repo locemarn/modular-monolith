@@ -4,6 +4,11 @@ import { RabbitmqService } from './rabbitmq.service'
 
 export const RABBITMQ_SERVICE = 'RABBITMQ_SERVICE'
 
+const rabbitMqUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.CLOUDAMQP_URL
+    : process.env.RABBITMQ_URL
+
 @Module({})
 export class RabbitmqModule {
   static register(queueName: string, serviceName: string): DynamicModule {
@@ -15,7 +20,7 @@ export class RabbitmqModule {
             name: serviceName,
             transport: Transport.RMQ,
             options: {
-              urls: ['amqp://rabbit_user:rabbit_password@localhost:5672'],
+              urls: [`${rabbitMqUrl}`],
               queue: queueName,
               queueOptions: {
                 durable: false,

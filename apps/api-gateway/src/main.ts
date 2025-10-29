@@ -1,7 +1,9 @@
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
-import { RABBITMQ_CONSTANTS } from '../../shared/constants/rabbitmq'
+import { loadEnvironment } from '../../shared/config/env.config'
 import { ApiGatewayModule } from './api-gateway.module'
+
+loadEnvironment()
 
 async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule)

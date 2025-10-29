@@ -12,4 +12,8 @@ export const RABBITMQ_CONSTANTS = {
     FIND_USER_BY_EMAIL: 'FIND_USER_BY_EMAIL',
     LOGIN_USER: 'LOGIN_USER',
   },
+  RABBITMQ_URL:
+    process.env.NODE_ENV === 'production'
+      ? process.env.CLOUDAMQP_URL
+      : process.env.RABBITMQ_URL,
 }

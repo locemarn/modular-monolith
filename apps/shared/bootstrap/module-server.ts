@@ -27,10 +27,13 @@ export class ModuleServer {
     })
     app.useGlobalPipes(validationPipe)
 
+    const nodeEnv = configService.get('NODE_ENV')
+
     if (this.config.rabbitmq) {
       const rabbitMqUrl =
-        configService.get('RABBITMQ_URL') ||
-        'amqp://rabbit_user:rabbit_password@localhost:5672'
+        nodeEnv === 'production'
+          ? configService.get('CLOUDAMQP_URL')
+          : configService.get('RABBITMQ_URL')
 
       const microservice = app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.RMQ,
@@ -38,7 +41,9 @@ export class ModuleServer {
           urls: [rabbitMqUrl],
           queue: this.config.rabbitmq.queue,
           queueOptions: {
-            durable: this.config.rabbitmq.queueOptions?.durable || false,
+            // durable: this.config.rabbitmq.queueOptions?.durable || false,
+            durable: true,
+            autoDelete: false,
           },
         },
       })

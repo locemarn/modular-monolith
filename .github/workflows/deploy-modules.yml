@@ -94,10 +94,13 @@ jobs:
       - name: Run unit and integration tests
         run: pnpm test
         env:
+          NODE_ENV: test
           DATABASE_HOST: localhost
-          DATABASE_PORT: 5433
-          DATABASE_USER: test_user
-          DATABASE_PASSWORD: test_password
+          DATABASE_PORT: 5432
+          DATABASE_USER: postgres_user
+          DATABASE_PASSWORD: postgres_password
+          DATABASE_NAME: user_service_db
+          RABBITMQ_URL: amqp://rabbit_user:rabbit_password@localhost:5672
           DATABASE_NAME: test_db
           RABBITMQ_URL: amqp://test_user:test_password@localhost:5673
           NODE_ENV: test
