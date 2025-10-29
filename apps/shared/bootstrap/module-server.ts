@@ -1,3 +1,4 @@
+import type { Type } from '@nestjs/common'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
@@ -9,7 +10,7 @@ export class ModuleServer {
 
   constructor(private config: ModuleConfig) {}
 
-  async start(moduleClass: object): Promise<void> {
+  async start(moduleClass: Type): Promise<void> {
     const app = await NestFactory.create(moduleClass, {
       logger: ['error', 'warn', 'debug', 'log'],
     })

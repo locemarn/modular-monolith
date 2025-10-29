@@ -1,6 +1,6 @@
 {
   "name": "nestjs-microservices",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "",
   "private": true,
@@ -41,7 +41,7 @@
     "format:check": "biome format --check",
     "analyze": "biome analyze",
     "fix": "biome check --write && biome format --write",
-    "prepare": "biome check --apply && tsc --noEmit",
+    "prepare": "biome check --write && tsc --noEmit",
     "check:all": "biome check && tsc --noEmit && jest --passWithNoTests",
     "test": "jest --silent",
     "test:api-gateway": "cd apps/api-gateway && pnpm test",
