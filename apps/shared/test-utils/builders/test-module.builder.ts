@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import {
   inMemoryDatabaseConfig,
   testDatabaseConfig,
-} from '../../../config/database.config'
+} from '../../config/database.config'
 
 export class TestModuleBuilder {
   private imports: Array<Type<unknown> | DynamicModule> = []

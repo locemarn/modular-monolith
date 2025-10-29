@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { firstValueFrom } from 'rxjs'
 import { DataSource } from 'typeorm'
 import { RABBITMQ_CONSTANTS } from '../../../../shared/constants/rabbitmq'
-import { testDatabaseConfig } from '../../../../config/database.config'
+import { testDatabaseConfig } from '../../../../shared/config/database.config'
 import { UserTestFactory } from '../../../../shared/test-utils/factories/user-test.factory'
 import {
   testRabbitMQConfig,

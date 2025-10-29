@@ -34,28 +34,14 @@ afterEach(() => {
   jest.restoreAllMocks()
 })
 
-jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
-jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
-jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
-jest.spyOn(Logger.prototype, 'debug').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
-jest.spyOn(Logger.prototype, 'verbose').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
+jest.spyOn(Logger.prototype, 'log').mockImplementation(() => ({}))
+jest.spyOn(Logger.prototype, 'error').mockImplementation(() => ({}))
+jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => ({}))
+jest.spyOn(Logger.prototype, 'debug').mockImplementation(() => ({}))
+jest.spyOn(Logger.prototype, 'verbose').mockImplementation(() => ({}))
 
-jest.spyOn(global.console, 'error').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
-jest.spyOn(global.console, 'warn').mockImplementation(() => {
-  // Silenciar logs durante testes
-})
+jest.spyOn(global.console, 'error').mockImplementation(() => ({}))
+jest.spyOn(global.console, 'warn').mockImplementation(() => ({}))
 
 beforeAll(() => {
   jest.spyOn(process.stderr, 'write').mockImplementation(() => true as boolean)

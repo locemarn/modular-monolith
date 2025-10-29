@@ -1,7 +1,7 @@
 import { DynamicModule, Provider, Type } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { inMemoryDatabaseConfig } from '../../../config/database.config'
+import { inMemoryDatabaseConfig } from '../../config/database.config'
 
 export async function createTestModule(options: {
   providers?: Provider[]
