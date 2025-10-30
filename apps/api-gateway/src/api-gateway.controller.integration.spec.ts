@@ -49,7 +49,7 @@ describe('ApiGatewayController (Integration)', () => {
   })
 
   it('should return hello message', () => {
-    expect(controller.getHello()).toBe('Hello World!')
+    expect(controller.getHello()).toBe('Hello World api gateway service!')
   })
 
   describe('login flow', () => {
