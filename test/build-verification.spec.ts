@@ -63,7 +63,7 @@ describe('Build Verification Tests', () => {
       // Clean dist directory before each test
       try {
         execSync('rm -rf dist', { stdio: 'pipe', cwd: rootDir })
-      } catch (error) {
+      } catch (_error) {
         // Ignore if dist doesn't exist
       }
     })

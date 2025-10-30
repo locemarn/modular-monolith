@@ -31,8 +31,20 @@ describe('Build → Start Workflow Integration Tests', () => {
 
     it('should validate start script paths exist', () => {
       // Check that the paths referenced in start scripts actually exist
-      const apiGatewayPath = join(rootDir, 'dist', 'apps', 'api-gateway', 'main.js')
-      const userServicePath = join(rootDir, 'dist', 'apps', 'user-service', 'main.js')
+      const apiGatewayPath = join(
+        rootDir,
+        'dist',
+        'apps',
+        'api-gateway',
+        'main.js',
+      )
+      const userServicePath = join(
+        rootDir,
+        'dist',
+        'apps',
+        'user-service',
+        'main.js',
+      )
 
       expect(existsSync(apiGatewayPath)).toBe(true)
       expect(existsSync(userServicePath)).toBe(true)
