@@ -20,7 +20,7 @@ export class ApiGatewayService {
     private readonly rabbitmqService: RabbitmqService,
   ) {}
   getHello(): string {
-    return 'Hello World!'
+    return 'Hello World api gateway service!'
   }
 
   async login(data: LoginInput): Promise<AuthTokenResponse> {
