@@ -25,7 +25,7 @@ RUN corepack enable && corepack prepare pnpm@9 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/user-service/package.json ./apps/user-service/
 
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/apps/shared ./apps/shared
