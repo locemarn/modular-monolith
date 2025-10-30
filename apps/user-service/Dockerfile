@@ -1,51 +1,36 @@
-# Multi-stage build for User Service
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy shared dependencies first
-COPY apps/shared ./apps/shared
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Copy User Service specific files
-COPY apps/user-service/package.json ./
-COPY apps/user-service/src ./src
-COPY apps/user-service/tsconfig.app.json ./tsconfig.app.json
-COPY tsconfig.json nest-cli.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nest-cli.json ./
+COPY tsconfig.json ./
 
-# Install dependencies
-RUN npm install -g pnpm
+COPY apps/user-service/package.json ./apps/user-service/
+COPY apps/shared/package.json ./apps/shared/ 2>/dev/null || true
+
 RUN pnpm install --frozen-lockfile
 
-# Build the User Service
-RUN pnpm run build
+COPY apps/user-service ./apps/user-service
+COPY apps/shared ./apps/shared
 
-# Production stage
-FROM node:18-alpine AS production
+RUN pnpm run build:user-service
+
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Install curl for health checks
-RUN apk add --no-cache curl
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Copy package.json and install production dependencies
-COPY apps/user-service/package.json ./
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile --prod
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/user-service/package.json ./apps/user-service/
 
-# Copy built application
+RUN pnpm install --prod --frozen-lockfile
+
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/apps/shared ./apps/shared
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
-USER nestjs
-
-# Expose port
 EXPOSE 3001
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3001/health || exit 1
-
-# Start the application
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/apps/user-service/main.js"]

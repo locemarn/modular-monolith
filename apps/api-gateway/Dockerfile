@@ -1,53 +1,43 @@
-# Multi-stage build for API Gateway
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy shared dependencies first
-COPY apps/shared ./apps/shared
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Copy API Gateway specific files
-COPY apps/api-gateway/package.json ./
-COPY apps/api-gateway/src ./src
-COPY apps/api-gateway/proto ./proto
-COPY apps/api-gateway/tsconfig.app.json ./tsconfig.app.json
-COPY tsconfig.json nest-cli.json ./
+# Copiar arquivos raiz
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nest-cli.json ./
+COPY tsconfig.json ./
 
-# Install dependencies
-RUN npm install -g pnpm
+# Copiar package.json de cada app
+COPY apps/api-gateway/package.json ./apps/api-gateway/
+COPY apps/shared/package.json ./apps/shared/ 2>/dev/null || true
+
+# Instalar dependências
 RUN pnpm install --frozen-lockfile
 
-# Build the API Gateway
-RUN pnpm run build
+# Copiar código
+COPY apps/api-gateway ./apps/api-gateway
+COPY apps/shared ./apps/shared
 
-# Production stage
-FROM node:18-alpine AS production
+# Build
+RUN pnpm run build:api-gateway
+
+# Production
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Install curl for health checks
-RUN apk add --no-cache curl
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Copy package.json and install production dependencies
-COPY apps/api-gateway/package.json ./
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile --prod
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api-gateway/package.json ./apps/api-gateway/
 
-# Copy built application and proto files
+RUN pnpm install --prod --frozen-lockfile
+
+# Copiar build
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/proto ./proto
+COPY --from=builder /app/apps/shared ./apps/shared
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
-USER nestjs
+EXPOSE 3000
 
-# Expose ports (HTTP and gRPC)
-EXPOSE 3000 50051
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
-
-# Start the application
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/apps/api-gateway/main.js"]

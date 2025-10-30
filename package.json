@@ -13,7 +13,7 @@
     "start": "nest start",
     "start:api-gateway": "nest start api-gateway",
     "start:user-service": "nest start user-service",
-    "start:all": "concurrently \"pnpm run start:api-gateway\" \"pnpm run start:user-service\"",
+    "start:all": "concurrently --kill-others-on-fail \"pnpm run start:api-gateway\" \"pnpm run start:user-service\"",
     "start:dev": "nest start --watch",
     "start:dev:api-gateway": "nest start api-gateway --watch",
     "start:dev:user-service": "nest start user-service --watch",
@@ -21,7 +21,10 @@
     "start:debug": "nest start --debug --watch",
     "start:debug:api-gateway": "nest start api-gateway --debug --watch",
     "start:debug:user-service": "nest start user-service --debug --watch",
-    "start:prod": "node dist/apps/nestjs-microservices/main",
+    "start:debug:all": "concurrently \"pnpm run start:debug:api-gateway\" \"pnpm run start:debug:user-service\"",
+    "start:prod:api-gateway": "node dist/apps/api-gateway/main.js",
+    "start:prod:user-service": "node dist/apps/user-service/main.js",
+    "start:prod:all": "concurrently --kill-others-on-fail \"pnpm run start:prod:api-gateway\" \"pnpm run start:prod:user-service\"",
     "install:modules": "./scripts/install-module.sh all",
     "install:api-gateway": "./scripts/install-module.sh api-gateway",
     "install:user-service": "./scripts/install-module.sh user-service",
@@ -52,6 +55,7 @@
     "test:unit": "jest --testNamePattern=unit",
     "test:integration": "jest --testNamePattern=integration --silent",
     "test:e2e": "jest --testNamePattern=e2e",
+    "test:build": "jest --testPathPattern=test/.*\\.spec\\.ts$ --runInBand",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "docker:test:up": "docker-compose -f docker-compose.test.yml up -d",
     "docker:test:down": "docker-compose -f docker-compose.test.yml down -v",
@@ -131,6 +135,6 @@
     "collectCoverageFrom": ["**/*.(t|j)s"],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
-    "roots": ["<rootDir>/apps/"]
+    "roots": ["<rootDir>/apps/", "<rootDir>/test/"]
   }
 }

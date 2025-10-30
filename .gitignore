@@ -61,9 +61,13 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # api-gateway
 /apps/api-gateway/node_modules
+/apps/api-gateway/dist
+
 
 # user-service
 /apps/user-service/node_modules
+/apps/user-service/dist
+
 
 # MD files
 deploy-config.md
