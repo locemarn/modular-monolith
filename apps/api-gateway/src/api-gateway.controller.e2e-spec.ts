@@ -59,7 +59,7 @@ describe('ApiGatewayController (e2e)', () => {
 
   describe('Health Check', () => {
     it('should return hello message', () => {
-      expect(controller.getHello()).toBe('Hello World api gateway service!')
+      expect(controller.getHello()).toBe('Hello World!')
     })
   })
 
