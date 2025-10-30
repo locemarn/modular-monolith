@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -113,7 +117,7 @@ jobs:
           DATABASE_NAME: test_db
           RABBITMQ_URL: amqp://test_user:test_password@localhost:5673
 
-  build-api-gateway:
+  build-and-push-api-gateway:
     runs-on: ubuntu-latest
     needs: [detect-changes, test]
     if: needs.detect-changes.outputs.api-gateway == 'true'
@@ -140,8 +144,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=sha,prefix={{branch}}-
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
             
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -154,7 +157,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  build-user-service:
+  build-and-push-user-service:
     runs-on: ubuntu-latest
     needs: [detect-changes, test]
     if: needs.detect-changes.outputs.user-service == 'true'
@@ -181,8 +184,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=sha,prefix={{branch}}-
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
             
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -197,7 +199,7 @@ jobs:
 
   deploy-api-gateway:
     runs-on: ubuntu-latest
-    needs: [build-api-gateway]
+    needs: [build-and-push-api-gateway]
     if: github.ref == 'refs/heads/main'
     environment: production
     
@@ -242,7 +244,7 @@ jobs:
 
   deploy-user-service:
     runs-on: ubuntu-latest
-    needs: [build-user-service]
+    needs: [build-and-push-user-service]
     if: github.ref == 'refs/heads/main'
     environment: production
     
