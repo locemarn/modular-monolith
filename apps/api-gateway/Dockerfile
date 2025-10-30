@@ -10,7 +10,6 @@ COPY tsconfig.json ./
 
 # Copiar package.json de cada app
 COPY apps/api-gateway/package.json ./apps/api-gateway/
-COPY apps/shared/package.json ./apps/shared/ 2>/dev/null || true
 
 # Instalar dependências
 RUN pnpm install --frozen-lockfile

@@ -1,0 +1,3 @@
+packages:
+  - 'apps/api-gateway'
+  - 'apps/user-service'

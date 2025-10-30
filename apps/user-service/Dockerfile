@@ -8,7 +8,6 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nest-cli.json ./
 COPY tsconfig.json ./
 
 COPY apps/user-service/package.json ./apps/user-service/
-COPY apps/shared/package.json ./apps/shared/ 2>/dev/null || true
 
 RUN pnpm install --frozen-lockfile
 
