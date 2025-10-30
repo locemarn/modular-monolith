@@ -197,97 +197,97 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy-api-gateway:
-    runs-on: ubuntu-latest
-    needs: [build-and-push-api-gateway]
-    if: github.ref == 'refs/heads/main'
-    environment: production
+  # deploy-api-gateway:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-and-push-api-gateway]
+  #   if: github.ref == 'refs/heads/main'
+  #   environment: production
     
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
       
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
+  #     - name: Setup kubectl
+  #       uses: azure/setup-kubectl@v3
+  #       with:
+  #         version: 'latest'
       
-      - name: Configure kubectl
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-          kubectl config use-context ${{ secrets.KUBE_CONTEXT }}
+  #     - name: Configure kubectl
+  #       run: |
+  #         mkdir -p $HOME/.kube
+  #         echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+  #         chmod 600 $HOME/.kube/config
+  #         kubectl config use-context ${{ secrets.KUBE_CONTEXT }}
       
-      - name: Create/Update Kubernetes secrets
-        run: |
-          kubectl create secret generic api-gateway-secrets \
-            --from-literal=DATABASE_URL=${{ secrets.PROD_DATABASE_URL }} \
-            --from-literal=RABBITMQ_URL=${{ secrets.PROD_RABBITMQ_URL }} \
-            --from-literal=JWT_SECRET=${{ secrets.PROD_JWT_SECRET }} \
-            --from-literal=JWT_EXPIRES_IN=${{ secrets.PROD_JWT_EXPIRES_IN }} \
-            --from-literal=NODE_ENV=production \
-            --dry-run=client -o yaml | kubectl apply -f -
+  #     - name: Create/Update Kubernetes secrets
+  #       run: |
+  #         kubectl create secret generic api-gateway-secrets \
+  #           --from-literal=DATABASE_URL=${{ secrets.PROD_DATABASE_URL }} \
+  #           --from-literal=RABBITMQ_URL=${{ secrets.PROD_RABBITMQ_URL }} \
+  #           --from-literal=JWT_SECRET=${{ secrets.PROD_JWT_SECRET }} \
+  #           --from-literal=JWT_EXPIRES_IN=${{ secrets.PROD_JWT_EXPIRES_IN }} \
+  #           --from-literal=NODE_ENV=production \
+  #           --dry-run=client -o yaml | kubectl apply -f -
       
-      - name: Deploy to Kubernetes
-        run: |
-          echo "Deploying API Gateway to Kubernetes"
-          kubectl apply -f apps/api-gateway/k8s/
-          kubectl set image deployment/api-gateway \
-            api-gateway=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api-gateway:${{ github.sha }} \
-            --record
-          kubectl rollout status deployment/api-gateway --timeout=5m
+  #     - name: Deploy to Kubernetes
+  #       run: |
+  #         echo "Deploying API Gateway to Kubernetes"
+  #         kubectl apply -f apps/api-gateway/k8s/
+  #         kubectl set image deployment/api-gateway \
+  #           api-gateway=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api-gateway:${{ github.sha }} \
+  #           --record
+  #         kubectl rollout status deployment/api-gateway --timeout=5m
           
-      - name: Verify deployment
-        run: |
-          kubectl get pods -l app=api-gateway
-          kubectl get svc api-gateway
+  #     - name: Verify deployment
+  #       run: |
+  #         kubectl get pods -l app=api-gateway
+  #         kubectl get svc api-gateway
 
-  deploy-user-service:
-    runs-on: ubuntu-latest
-    needs: [build-and-push-user-service]
-    if: github.ref == 'refs/heads/main'
-    environment: production
+  # deploy-user-service:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-and-push-user-service]
+  #   if: github.ref == 'refs/heads/main'
+  #   environment: production
     
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
       
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
+  #     - name: Setup kubectl
+  #       uses: azure/setup-kubectl@v3
+  #       with:
+  #         version: 'latest'
       
-      - name: Configure kubectl
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-          kubectl config use-context ${{ secrets.KUBE_CONTEXT }}
+  #     - name: Configure kubectl
+  #       run: |
+  #         mkdir -p $HOME/.kube
+  #         echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+  #         chmod 600 $HOME/.kube/config
+  #         kubectl config use-context ${{ secrets.KUBE_CONTEXT }}
       
-      - name: Create/Update Kubernetes secrets
-        run: |
-          kubectl create secret generic user-service-secrets \
-            --from-literal=DATABASE_URL=${{ secrets.PROD_DATABASE_URL }} \
-            --from-literal=RABBITMQ_URL=${{ secrets.PROD_RABBITMQ_URL }} \
-            --from-literal=JWT_SECRET=${{ secrets.PROD_JWT_SECRET }} \
-            --from-literal=JWT_EXPIRES_IN=${{ secrets.PROD_JWT_EXPIRES_IN }} \
-            --from-literal=NODE_ENV=production \
-            --dry-run=client -o yaml | kubectl apply -f -
+  #     - name: Create/Update Kubernetes secrets
+  #       run: |
+  #         kubectl create secret generic user-service-secrets \
+  #           --from-literal=DATABASE_URL=${{ secrets.PROD_DATABASE_URL }} \
+  #           --from-literal=RABBITMQ_URL=${{ secrets.PROD_RABBITMQ_URL }} \
+  #           --from-literal=JWT_SECRET=${{ secrets.PROD_JWT_SECRET }} \
+  #           --from-literal=JWT_EXPIRES_IN=${{ secrets.PROD_JWT_EXPIRES_IN }} \
+  #           --from-literal=NODE_ENV=production \
+  #           --dry-run=client -o yaml | kubectl apply -f -
       
-      - name: Deploy to Kubernetes
-        run: |
-          echo "Deploying User Service to Kubernetes"
-          kubectl apply -f apps/user-service/k8s/
-          kubectl set image deployment/user-service \
-            user-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/user-service:${{ github.sha }} \
-            --record
-          kubectl rollout status deployment/user-service --timeout=5m
+  #     - name: Deploy to Kubernetes
+  #       run: |
+  #         echo "Deploying User Service to Kubernetes"
+  #         kubectl apply -f apps/user-service/k8s/
+  #         kubectl set image deployment/user-service \
+  #           user-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/user-service:${{ github.sha }} \
+  #           --record
+  #         kubectl rollout status deployment/user-service --timeout=5m
           
-      - name: Verify deployment
-        run: |
-          kubectl get pods -l app=user-service
-          kubectl get svc user-service
+  #     - name: Verify deployment
+  #       run: |
+  #         kubectl get pods -l app=user-service
+  #         kubectl get svc user-service
 
-  notify-deployment:
+  # notify-deployment:
     runs-on: ubuntu-latest
     needs: [deploy-api-gateway, deploy-user-service]
     if: |
