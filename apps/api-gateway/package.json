@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "nest build",
-    "start": "node ../../dist/apps/api-gateway/apps/main.js",
+    "start": "node ../../dist/apps/api-gateway/src/main.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "test": "jest",
