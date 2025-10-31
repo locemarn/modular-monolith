@@ -41,4 +41,4 @@ COPY --from=builder /app/apps/api-gateway/proto ./apps/api-gateway/proto
 
 EXPOSE 3000 50051
 
-CMD ["node", "dist/apps/api-gateway/src/main.js"]
+CMD ["node", "dist/api-gateway/src/main.js"]
