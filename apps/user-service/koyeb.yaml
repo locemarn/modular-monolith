@@ -1,0 +1,19 @@
+name: user-service
+region: was
+instance:
+  type: free
+ports:
+  - port: 3001
+    protocol: http
+env:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: 3001
+build:
+  context: .
+  dockerfile: apps/user-service/Dockerfile
+healthcheck:
+  http:
+    port: 3001
+    path: /health

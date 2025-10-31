@@ -1,0 +1,19 @@
+name: api-gateway
+region: was
+instance:
+  type: free
+ports:
+  - port: 3000
+    protocol: http
+env:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: 3000
+build:
+  context: .
+  dockerfile: apps/api-gateway/Dockerfile
+healthcheck:
+  http:
+    port: 3000
+    path: /health
