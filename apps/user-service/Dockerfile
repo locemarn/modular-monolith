@@ -32,4 +32,4 @@ COPY --from=builder /app/apps/shared ./apps/shared
 
 EXPOSE 3001
 
-CMD ["node", "dist/apps/user-service/main.js"]
+CMD ["node", "dist/apps/user-service/src/main.js"]
