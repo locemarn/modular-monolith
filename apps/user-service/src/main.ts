@@ -8,7 +8,6 @@ import { RABBITMQ_CONSTANTS } from '../../shared/constants/rabbitmq'
 import { AllExceptionsFilter } from './presentation/filters/rpc-exception.filter'
 import { UserServiceModule } from './user-service.module'
 
-// Carrega variáveis de ambiente antes de tudo
 loadEnvironment()
 
 async function bootstrap() {
@@ -46,7 +45,7 @@ async function bootstrap() {
       urls: [rabbitMqUrl],
       queue: RABBITMQ_CONSTANTS.QUEUES.USER_QUEUE,
       queueOptions: {
-        durable: false,
+        durable: true,
         autoDelete: false,
       },
     },
