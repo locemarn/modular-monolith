@@ -42,7 +42,7 @@ export class ModuleServer {
           queue: this.config.rabbitmq.queue,
           queueOptions: {
             // durable: this.config.rabbitmq.queueOptions?.durable || false,
-            durable: true,
+            durable: nodeEnv === 'production',
             autoDelete: false,
           },
         },

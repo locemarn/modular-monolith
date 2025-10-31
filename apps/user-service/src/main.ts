@@ -45,7 +45,7 @@ async function bootstrap() {
       urls: [rabbitMqUrl],
       queue: RABBITMQ_CONSTANTS.QUEUES.USER_QUEUE,
       queueOptions: {
-        durable: true,
+        durable: nodeEnv === 'production',
         autoDelete: false,
       },
     },
