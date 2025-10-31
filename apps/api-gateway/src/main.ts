@@ -1,3 +1,4 @@
+import { join } from 'node:path'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { loadEnvironment } from '../../shared/config/env.config'
@@ -13,7 +14,10 @@ async function bootstrap() {
     options: {
       url: '0.0.0.0:50051',
       package: 'api_gateway',
-      protoPath: 'apps/api-gateway/proto/api-gateway.proto',
+      protoPath: join(
+        process.cwd(),
+        'apps/api-gateway/proto/api-gateway.proto',
+      ),
     },
   })
 
