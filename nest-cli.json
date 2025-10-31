@@ -17,15 +17,6 @@
         "watchAssets": true
       }
     },
-    "shared/events": {
-      "type": "library",
-      "root": "apps/shared/events",
-      "entryFile": "index",
-      "sourceRoot": "apps/shared/events/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/shared/events/tsconfig.json"
-      }
-    },
     "user-service": {
       "type": "application",
       "root": "apps/user-service",
