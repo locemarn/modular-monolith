@@ -1,11 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
+  "sourceRoot": "apps",
   "compilerOptions": {
-    "deleteOutDir": false
+    "deleteOutDir": false,
+    "webpack": false
   },
   "monorepo": true,
-  "root": "apps/api-gateway",
   "projects": {
     "api-gateway": {
       "type": "application",
