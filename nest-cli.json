@@ -13,6 +13,7 @@
       "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
         "tsConfigPath": "apps/api-gateway/tsconfig.json",
+        "assets": ["**/*.proto"],
         "deleteOutDir": true
       }
     },

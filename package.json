@@ -12,6 +12,8 @@
     "build:all": "pnpm run build:api-gateway && pnpm run build:user-service",
     "start": "nest start",
     "start:api-gateway": "nest start api-gateway",
+    "start:api-gateway:dev": "nest start api-gateway --watch",
+    "start:api-gateway:prod": "node dist/apps/api-gateway/main",
     "start:user-service": "nest start user-service",
     "start:all": "concurrently --kill-others-on-fail \"pnpm run start:api-gateway\" \"pnpm run start:user-service\"",
     "start:dev": "nest start --watch",

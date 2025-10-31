@@ -37,6 +37,8 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/apps/shared ./apps/shared
 
-EXPOSE 3000
+COPY --from=builder /app/apps/api-gateway/proto ./apps/api-gateway/proto
+
+EXPOSE 3000 50051
 
 CMD ["node", "dist/apps/api-gateway/main.js"]
