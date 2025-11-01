@@ -3,6 +3,7 @@ import { baseConfig } from './jest.config.base.js'
 export default {
   ...baseConfig,
   rootDir: '.',
+  roots: ['<rootDir>/apps'],
   collectCoverageFrom: [
     'apps/**/*.ts',
     '!apps/**/*.spec.ts',
@@ -25,18 +26,33 @@ export default {
   projects: [
     {
       displayName: 'unit',
-      testMatch: ['**/__tests__/unit/**/*.spec.ts'],
+      rootDir: '.',
+      roots: ['<rootDir>/apps'],
+      testMatch: ['**/apps/**/__tests__/unit/**/*.spec.ts'],
       testEnvironment: 'node',
+      transform: {
+        '^.+\\.(t|j)s$': 'ts-jest',
+      },
     },
     {
       displayName: 'integration',
-      testMatch: ['**/__tests__/integration/**/*.spec.ts'],
+      rootDir: '.',
+      roots: ['<rootDir>/apps'],
+      testMatch: ['**/apps/**/__tests__/integration/**/*.spec.ts'],
       testEnvironment: 'node',
+      transform: {
+        '^.+\\.(t|j)s$': 'ts-jest',
+      },
     },
     {
       displayName: 'e2e',
-      testMatch: ['**/__tests__/e2e/**/*.spec.ts'],
+      rootDir: '.',
+      roots: ['<rootDir>/apps'],
+      testMatch: ['**/apps/**/__tests__/e2e/**/*.spec.ts'],
       testEnvironment: 'node',
+      transform: {
+        '^.+\\.(t|j)s$': 'ts-jest',
+      },
     },
   ],
 }

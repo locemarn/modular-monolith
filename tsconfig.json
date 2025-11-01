@@ -17,6 +17,10 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
-  }
+    "rootDir": "./",
+    "paths": {
+      "@app/shared/*": ["apps/shared/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
 }
